@@ -1,0 +1,244 @@
+#include <iostream>
+using namespace std;
+
+ //  Function to show menu
+int userChoice(){
+  	int switchVar;
+  	cout<<"PRESS 1 TO STORE YOUR VALUES: "<<endl;
+  	cout<<"PRESS 2 TO SHOW YOUR VALUES: "<<endl;
+  	cout<<"PRESS 3 TO SHOW MAX NUMBER IN ARRAY: "<<endl;
+  	cout<<"PRESS 4 TO FIND NUMBER IN ARRAY(LINEAR): "<<endl;
+  	cout<<"PRESS 5 TO FIND NUMBER IN ARRAY(Binary): "<<endl;
+  	cout<<"PRESS 6 TO SORT AN ARRAY(Bubble sort): "<<endl;
+  	cout<<"PRESS 7 TO SORT AN ARRAY(Selection sort): "<<endl;
+  	cout<<"PRESS 8 TO SORT AN ARRAY(Insertion sort): "<<endl;
+  	cout<<"PRESS 0 TO exit: "<<endl;
+  	cin>>switchVar;
+  	return switchVar;
+}
+  
+//Insertion sort
+void insertionSort(int arr[],int arrSize){
+  for (int i = 1; i < arrSize; i++)
+  {
+	int current=arr[i];
+	int j=i-1;
+
+	while(j>=0 && arr[j]>current){
+      arr[j+1]=arr[j];
+       j--;
+    }
+
+	arr[j+1]=current;
+  }
+}
+
+ //Check wether array is sorted or not
+bool checkSort(int arr[], int arrSize){
+ 
+   for (int i = 0; i < arrSize-1; i++)
+   {
+	if(arr[i]>arr[i+1]){
+		return false;	
+	}
+   }
+   return true;
+
+}
+ //Check wether array is sorted or not
+
+// Binary search
+int binarySearch(int arr[], int arrSize){
+	 int target;
+
+	//Check wether array is sorted or not
+	if (!checkSort(arr, arrSize)) {
+        cout<<"Array is not sorted."<<endl;
+    }else{
+		cout<<"Enter a number to find in array ";
+            cin>>target;
+	}
+
+   int startMark=0;
+   int endMark=arrSize-1;
+   int midMark=(endMark+startMark)/2;
+
+   while(startMark <= endMark){
+    if(arr[midMark]==target){
+        return midMark;
+        
+    }
+    else if(target> arr[midMark]){
+        startMark=midMark+1;
+    }
+    else {
+        endMark=midMark-1;     
+    }
+     midMark=(endMark+startMark)/2;
+   }
+   //If target value isn't in array
+    return -1; //it will indicate that target not found 
+}
+
+//	  function to store value in array
+void arrInitializer(int arr[], int arrSize){
+	
+	for (int i=0; i<arrSize; i++){
+   	cout<<"Enter value no. "<<i+1<<endl;
+   	cin>> arr[i];
+   }
+}
+	
+//	   function to show array elements
+void printArr(int arr[], int arrSize){
+	
+	for (int i=0; i<arrSize; i++){
+    	cout<<"value no. "<<i+1<< " is: "<<arr[i]<<endl;
+    	
+	}//printArr
+		
+}
+	
+// Function to find maximum number in array
+void maxNum(int arr[], int arrSize){
+	int maxDigit=arr[0];
+    
+	  for (int i=0; i<arrSize; i++){
+   	   if(maxDigit<arr[i]){
+   	   	maxDigit=arr[i];
+	  }
+	}
+    cout<<"max number is: "<<maxDigit<<endl;
+
+}
+	    
+int linearSearch(int arr[], int arrSize, int reqNum){
+	// bool numFound=false;
+    for (int i=0; i<arrSize; i++){
+    	if(arr[i]==reqNum){
+    		return i;
+		}	
+    }
+	return -1;
+}
+      
+ // Bubble sort function
+void bubbleSort(int arr[],int arrSize ){
+  //swapCheck will check wether all the element are sorter or not if sort it will stop other itration of outer loop.
+  bool swapCheck= false;
+
+  for(int i=arrSize-1; i>0; i--){
+    for (int j = 0; j < i; j++){
+      if(arr[j]>arr[j+1]){
+      //  Swapping using bitwise opretor!
+        int temp=arr[j];
+        arr[j]=arr[j+1];
+        arr[j+1]=temp;
+         swapCheck= true;
+      }
+      
+    }
+    if(!swapCheck){
+       cout<<"Given Array is already sorted!"<<endl;
+       break;
+    }
+  }
+}// Bubble sort function
+
+//Selection Sort
+void selectionSort(int arr[],int arrSize){
+  
+  for (int i = 0; i < arrSize -1; i++)
+  {
+    int minIndex =i; 
+    for (int j = i+1; j < arrSize; j++)
+    {
+      if (arr[j]<arr[minIndex])
+      {
+        minIndex=j;
+        
+      } 
+    }
+    //swap
+    int temp=arr[minIndex];
+    arr[minIndex]=arr[i];
+    arr[i]=temp;
+  }
+}
+
+int main(int argc, char** argv) {
+	int reqNum;
+	int arr[5];
+	int arrSize;
+	int LinearSearchResult;
+	int binarySearchResult;
+
+    //   It will show a manu bar to user to select any function he wants
+	int choiceNum = userChoice();
+	  	
+	while(choiceNum!=0){
+	  	switch(choiceNum){
+	  		case 1: 
+			cout<<"How much values do you want to store: ";
+			cin>>arrSize;
+			arrInitializer(arr, arrSize);
+	  		break;
+
+	  		case 2: printArr(arr, arrSize);
+	  		break;
+
+	  		case 3: maxNum(arr, arrSize);
+	  		break;
+
+	  		case 4: 
+	  		cout<<"Enter a number to find in array ";
+	  		cin>>reqNum;
+	  	    LinearSearchResult=linearSearch(arr, arrSize, reqNum);
+			
+			if(LinearSearchResult==-1){
+				cout<<"Target value isn't in array"<<endl;
+			}
+			else{
+				cout<<"Target is on index"<<LinearSearchResult<<endl;
+			}
+            break;
+
+            case 5:{
+            binarySearchResult=binarySearch(arr,arrSize);
+			if(binarySearchResult==-1){
+				cout<<"Target value isn't in array"<<endl;
+			}
+			else{
+				cout<<"Target is on "<<binarySearchResult<<" index"<<endl;
+			}
+            break;
+			}
+            case 6:{
+                bubbleSort(arr,arrSize);
+                for (int i = 0; i < arrSize; i++){
+                 cout<<"Sorted array is: "<<arr[i]<<" "<<endl;
+                }
+			    break;
+			}
+			case 7:{
+				selectionSort(arr,arrSize);
+                for (int i = 0; i < arrSize; i++){
+                 cout<<"Sorted array is: "<<arr[i]<<" "<<endl;
+                }
+			}
+			case 8: {
+				insertionSort(arr,arrSize);
+                for (int i = 0; i < arrSize; i++){
+                 cout<<"Sorted array is: "<<arr[i]<<" "<<endl;
+                }
+			}
+			default:
+			cout<<"Invalid option"<<endl;
+	    }
+	    
+	   choiceNum=userChoice();
+	   
+	}
+	  		
+	cout<<"Program has ended successfully" ;
+}
